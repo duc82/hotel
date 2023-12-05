@@ -114,7 +114,6 @@ const getRooms = async (url) => {
   });
 
   // render data
-
   const rooms = await getRooms("http://localhost:5000/api/rooms");
 
   const top3Rooms = rooms
