@@ -60,7 +60,7 @@ const userController = {
     });
   }),
 
-  getMe: asyncHandler(
+  getCurrent: asyncHandler(
     asyncHandler(async (req, res) => {
       const { userId } = req.user;
 

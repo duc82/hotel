@@ -9,6 +9,30 @@ const getRooms = async (url) => {
   }
 };
 
+const getCurrentUser = async (url) => {
+  try {
+    const res = await fetch(url, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) throw new Error(data.message);
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const logout = () => {
+  localStorage.removeItem("accessToken");
+  window.location.href = "/";
+  $("#loginModal").modal("show");
+};
+
 (async function ($) {
   "use strict";
 
@@ -181,4 +205,28 @@ const getRooms = async (url) => {
   $(".top3Rooms").html(roomsHtml(top3Rooms));
 
   $(".rooms").html(roomsHtml(rooms));
+
+  try {
+    const currentUser = await getCurrentUser(
+      "http://localhost:5000/api/users/current"
+    );
+    $("#rightNav").html(`
+    <a
+    href="http://localhost:3000/account.html"
+    data-bs-toggle="modal"
+    data-bs-target="#loginModal"
+    class="fullName nav-item nav-link py-4 d-block cursor-"
+  >${currentUser.fullName}
+  </a>
+  <span
+    role="button"
+    id="logout"
+    class="nav-item nav-link py-4 d-block"
+  >
+    Logout
+  </span>
+    `);
+  } catch (error) {}
+
+  $("#logout").click(logout);
 })(jQuery);

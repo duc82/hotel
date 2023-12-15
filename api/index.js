@@ -10,6 +10,7 @@ app.use("/public", express.static("public"));
 app.use((_req, res, next) => {
   res.set({
     "Access-Control-Allow-Origin": process.env.ORIGIN_CLIENT,
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
     "Access-Control-Allow-Methods": "GET, POST, PUT, PATCH, DELETE",
   });
   next();
